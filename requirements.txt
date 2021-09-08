@@ -1,0 +1,2 @@
+python-telegram-bot==13.7
+ephem==4.0.0.2
