@@ -8,7 +8,7 @@ print(ls[0])
 print(ls[-1])
 print(ls[1:4])
 
-del ls[-1]
+ls.remove('Python')
 print(ls)
 
 dt = {'city': 'Москва', 'temperature': '20'}
@@ -18,6 +18,12 @@ temp = dt['temperature']
 temp = int(temp) - 5
 dt['temperature'] = str(temp)
 print(dt)
+
+
+if 'country' in dt:
+    print('Ключ "country" есть')
+else:
+    print('Ключа "country" нет')
 
 country = dt.get('country', 'Россия')
 print(country)
