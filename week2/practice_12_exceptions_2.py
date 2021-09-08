@@ -1,11 +1,16 @@
 
+class TooMuchDiscount(Exception):
+    def __init__(self):
+        self.text = 'Слишком большая максимальная скидка'
+
+
 def discounted(price, discount, max_discount=20):
     try:
         price = abs(float(price))
         discount = abs(discount)
         max_discount = abs(int(max_discount))
         if max_discount >= 100:
-            raise ValueError('Слишком большая максимальная скидка')
+            raise TooMuchDiscount
         if discount >= max_discount:
             return price
         else:
@@ -14,6 +19,8 @@ def discounted(price, discount, max_discount=20):
         return 'Исключение ValueError'
     except TypeError:
         return 'Исключение TypeError'
+    except TooMuchDiscount as ex:
+        return ex.text
 
 
 def main():
