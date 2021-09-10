@@ -7,7 +7,7 @@ class TooMuchDiscount(Exception):
 def discounted(price, discount, max_discount=20):
     try:
         price = abs(float(price))
-        discount = abs(discount)
+        discount = abs(float(discount))
         max_discount = abs(int(max_discount))
         if max_discount >= 100:
             raise TooMuchDiscount
@@ -28,7 +28,7 @@ def main():
     print(discounted(100, 30))
     print(discounted(100, 30, 50))
     print(discounted(100, 30, 150))
-    print(discounted(100, 'abc'))
+    print(discounted(100, []))
     print(discounted(100, 30, 'abc'))
 
 
