@@ -8,14 +8,6 @@ person_jobs = [
     ]
 
 
-def get_header(dict_list):
-    header = set()
-    for dct in dict_list:
-        for key in dct:
-            header.add(key)
-    return header
-
-
 def write_csv(filename, header, data):
     with open(filename, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(f, header, delimiter=';')
@@ -25,7 +17,7 @@ def write_csv(filename, header, data):
 
 
 def main():
-    header = get_header(person_jobs)
+    header = {key for dct in person_jobs for key in dct}
     write_csv('dict_list.csv', header, person_jobs)
 
 
