@@ -48,8 +48,8 @@ groups = [
     ['Оля', 'Петя', 'Гриша'],
 ]
 print(f'Всего {len(groups)} группы')
-for group in groups:
-    group_number = groups.index(group) + 1
+for index, group in enumerate(groups):
+    group_number = index + 1
     print(f'Группа {group_number}: {len(group)} ученика')
 print('----------')
 
@@ -65,7 +65,7 @@ groups = [
     ['Оля', 'Петя', 'Гриша'],
     ['Вася', 'Маша', 'Саша', 'Женя'],
 ]
-for group in groups:
-    group_number = groups.index(group) + 1
+for index, group in enumerate(groups):
+    group_number = index + 1
     students = ', '.join(group)
     print(f'Группа {group_number}: {students}')

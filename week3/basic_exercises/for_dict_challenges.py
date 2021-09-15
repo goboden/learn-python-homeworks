@@ -41,11 +41,12 @@ students = [
 
 
 def most_common_name(counter):
-    return names_counter.most_common()[0]
+    name, _ = counter.most_common()[0]
+    return name
 
 
 names_counter = student_names_counter(students)
-name, count = most_common_name(names_counter)
+name = most_common_name(names_counter)
 print(f'Самое частое имя среди учеников: {name}')
 print('----------')
 
@@ -74,10 +75,10 @@ school_students = [
     ],
 ]
 
-for students in school_students:
-    class_number = school_students.index(students) + 1
+for index, students in enumerate(school_students):
+    class_number = index + 1
     names_counter = student_names_counter(students)
-    name, count = most_common_name(names_counter)
+    name = most_common_name(names_counter)
     print(f'Самое частое имя в классе {class_number}: {name}')
 print('----------')
 
