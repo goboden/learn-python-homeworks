@@ -30,3 +30,18 @@ def test_word_count():
     module = bot.bot_commands['wordcount']
     assert module.reply(None, None, 'Слово1 Слово2') == 'Слова некорректные'
     assert module.reply(None, None, 'Слово Слово') == '2 слова'
+
+
+def test_next_full_moon():
+    module = bot.bot_commands['next_full_moon']
+    reply = module.reply(None, None, '21-03-2021')
+    assert reply == 'Ближайшее полнолуние 28-03-2021'
+
+    reply = module.reply(None, None, '')
+    assert reply == 'Ближайшее полнолуние 20-09-2021'
+
+    reply = module.reply(None, None, '     ')
+    assert reply == 'Ближайшее полнолуние 20-09-2021'
+
+    reply = module.reply(None, None, '21-03-21')
+    assert reply == 'Дата не соответствует формату День-Месяц-Год (25-03-2021)'
