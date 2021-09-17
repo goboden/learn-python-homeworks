@@ -6,6 +6,12 @@ def test_user_message_parse():
     user_text = bot.validate_user_text('/command test message')
     assert user_text == 'test message', user_text
 
+    user_text = bot.validate_user_text('/command     test     message')
+    assert user_text == 'test message', user_text
+
+    user_text = bot.validate_user_text('/command          ')
+    assert user_text == '', user_text
+
 
 def test_get_command_handler():
 
