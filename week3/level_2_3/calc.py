@@ -1,3 +1,2 @@
-
-def reply(update, context):
-    return '+++++'
+def reply(context, user_id, user_text: str):
+    pass
