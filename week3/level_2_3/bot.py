@@ -10,7 +10,7 @@ import calc
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 bot_commands = {
     'wordcount': wordcount,
-    'naxt_full': next_full,
+    'next_full_moon': next_full,
     'cities': cities,
     'calc': calc,
 }
