@@ -1,15 +1,23 @@
 import json
+import copy
 
 
 cities_db = dict()
 
 
 class TooManyWords(Exception):
-    pass
+    def __init__(self):
+        self.text = 'Введено больше одного слова'
 
 
 class CityNotFound(Exception):
-    pass
+    def __init__(self):
+        self.text = 'Такого города нет'
+
+
+class NoMoreCities(Exception):
+    def __init__(self):
+        self.text = 'Я проиграл. Начинаем сначала.'
 
 
 def valid_city_name(word: str):
@@ -31,14 +39,47 @@ def validate_user_input(user_text: str):
     return city_name
 
 
+def user_data(context):
+    cities = context.user_data.get('cities', copy.deepcopy(cities_db))
+    drop = context.user_data.get('drop', set())
+    last_city = context.user_data.get('last_city', None)
+    return cities, drop, last_city
+
+
+def find_next_city(city_name: str, cities: dict, drop: set):
+    cities_by_letter = cities[city_name[0]]
+    cities_by_letter.remove(city_name)
+
+    cities_by_letter = cities.get(city_name[-1], [])
+    if len(cities_by_letter) == 0:
+        raise NoMoreCities
+    else:
+        next_city = cities_by_letter[0]
+        drop.add(next_city)
+        cities_by_letter.remove(next_city)
+        return next_city
+
+
 def reply(context, user_id: str, user_text: str):
     try:
         valid_city_name = validate_user_input(user_text)
-        return valid_city_name
-    except TooManyWords:
-        return 'Введите одно слово'
-    except CityNotFound:
-        return 'Город не найден в базе'
+        user_cities, user_drop, last_city = user_data(context)
+        if last_city and last_city[-1] != valid_city_name[0]:
+            return f'Город должен начинаться на букву {last_city[-1]}'
+        if valid_city_name in user_drop:
+            return 'Этот город уже был'
+        else:
+            user_drop.add(valid_city_name)
+        next_city = find_next_city(valid_city_name, user_cities, user_drop)
+
+        context.user_data['cities'] = user_cities
+        context.user_data['drop'] = user_drop
+        context.user_data['last_city'] = next_city
+        return next_city.capitalize()
+    except (TooManyWords, CityNotFound, NoMoreCities) as ex:
+        return ex.text
+    except ValueError:
+        return 'Название должно содержать только буквы'
 
 
 def load_cities_db():
