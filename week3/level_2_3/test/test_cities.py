@@ -13,32 +13,38 @@ def test_valid_city_name():
 
 
 def test_validate_user_input():
+    context = TelegramContextMock()
+    user_data = context.user_data
     assert pytest.raises(cities.CityNotFound, cities.validate_user_input,
-                         'сАрАтОвВ')
+                         'сАрАтОвВ', user_data)
 
 
 def test_reply():
     context = TelegramContextMock()
-    assert cities.reply(context, None, '1 2 3') == 'Введите одно слово'
-    assert cities.reply(context, None, 'Москва') == 'МОСКВА'
+    assert cities.reply(context, None,
+                        '1 2 3') == 'Введено больше одного слова.'
+    assert cities.reply(context, None, 'Москва') == 'Аша'
 
 
 @pytest.mark.usertest
 def test_telegram_context():
     context = TelegramContextMock()
 
+    reply = cities.reply(context, None, 'Москва1')
+    assert reply == 'Название должно содержать только буквы.'
+
     reply = cities.reply(context, None, 'Москва')
     assert reply == 'Аша'
     assert context.user_data['last_city'] == 'АША'
 
     reply = cities.reply(context, None, 'Аша')
-    assert reply == 'Этот город уже был'
+    assert reply == 'Этот город уже был.'
 
     reply = cities.reply(context, None, 'Королев')
-    assert reply == 'Город должен начинаться на букву А'
+    assert reply == 'Город должен начинаться на букву А.'
 
     reply = cities.reply(context, None, 'Аша')
-    assert reply == 'Этот город уже был'
+    assert reply == 'Этот город уже был.'
 
     assert 'АНАПА' in context.user_data['cities']['А']
 
